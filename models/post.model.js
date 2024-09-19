@@ -22,7 +22,11 @@ const postSchema = new mongoose.Schema({
     ref: "USER",
     required: true,
   },
-  eventDate: {
+  eventStartDate: {
+    type: Date, // Storing the event date
+    required: true,
+  },
+  eventEndDate: {
     type: Date, // Storing the event date
     required: true,
   },

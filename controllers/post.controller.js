@@ -28,12 +28,22 @@ const getMyPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { title, disc, image, eventDate, location, eventType, attendees } = req.body;
+  const { title, disc, image, eventStartDate, eventEndDate, location, eventType, attendees } =
+    req.body;
   const image_Id = extractPublicId(image);
 
   try {
     // Validate that all fields are present
-    if (!title || !image || !disc || !eventDate || !location || !eventType || !attendees) {
+    if (
+      !title ||
+      !image ||
+      !disc ||
+      !eventStartDate ||
+      !eventEndDate ||
+      !location ||
+      !eventType ||
+      !attendees
+    ) {
       return res.status(422).json({ message: "Fill all the inputs" });
     }
 
@@ -46,7 +56,8 @@ const createPost = async (req, res) => {
       image,
       user,
       image_Id,
-      eventDate,
+      eventStartDate,
+      eventEndDate,
       location,
       eventType,
       attendees,
