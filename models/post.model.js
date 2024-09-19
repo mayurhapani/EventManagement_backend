@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
   disc: {
     type: String,
     required: true,
@@ -29,7 +33,16 @@ const postSchema = new mongoose.Schema({
   eventType: {
     type: String, // Storing the event type
     required: true,
-    enum: ["Conference", "Workshop", "Meetup", "Webinar"], // Add your own event types here
+    enum: [
+      "Conference",
+      "Workshop",
+      "Concert",
+      "Workshop",
+      "Seminar",
+      "Meetup",
+      "Festival",
+      "Party",
+    ],
   },
   attendees: {
     type: Number, // Storing the max number of attendees

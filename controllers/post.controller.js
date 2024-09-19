@@ -28,12 +28,12 @@ const getMyPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { disc, image, eventDate, location, eventType, attendees } = req.body;
+  const { title, disc, image, eventDate, location, eventType, attendees } = req.body;
   const image_Id = extractPublicId(image);
 
   try {
     // Validate that all fields are present
-    if (!image || !disc || !eventDate || !location || !eventType || !attendees) {
+    if (!title || !image || !disc || !eventDate || !location || !eventType || !attendees) {
       return res.status(422).json({ message: "Fill all the inputs" });
     }
 
@@ -41,6 +41,7 @@ const createPost = async (req, res) => {
 
     // Create the post with the additional event-related fields
     const response = await postModel.create({
+      title,
       disc,
       image,
       user,
@@ -52,7 +53,7 @@ const createPost = async (req, res) => {
     });
 
     if (response) {
-      return res.status(201).json({ message: "Post Created Successfully" });
+      return res.status(201).json({ message: "Event Created Successfully" });
     } else {
       return res.status(422).json({ message: response.message });
     }
@@ -67,7 +68,7 @@ const deletePost = async (req, res) => {
     const { id } = req.params;
     const post = await postModel.findById(id).populate("user", "_id");
 
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) return res.status(404).json({ message: "Event not found" });
     const publicId = post.image_Id;
 
     if (req.user._id.toString() != post.user._id.toString())
@@ -77,7 +78,7 @@ const deletePost = async (req, res) => {
     await postModel.findByIdAndDelete(id);
     await deleteImageByUrl(`posts/${publicId}`, res);
 
-    return res.status(200).json({ message: "Post and image deleted successfully" });
+    return res.status(200).json({ message: "Event and image deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -109,7 +110,7 @@ const addComment = async (req, res) => {
     post.comments.push({ user: req.user._id, comment: req.body.comment });
     await post.save();
 
-    return res.status(200).json({ message: "Post Done" });
+    return res.status(200).json({ message: "Comment Done" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -120,7 +121,7 @@ const deleteComment = async (req, res) => {
     const { commentId, postId } = req.query;
     const post = await postModel.findById(postId);
 
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) return res.status(404).json({ message: "Event not found" });
 
     // Filter
     post.comments = post.comments.filter((comment) => comment._id.toString() !== commentId);
