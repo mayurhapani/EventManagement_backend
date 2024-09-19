@@ -14,6 +14,7 @@ const ouRouter = require("./routers/otherUser.router");
 const allowedOrigins = [
   "https://insta-clone-frontend-five.vercel.app",
   "https://insta-clone-frontend-sand.vercel.app",
+  "http://localhost:5173",
 ];
 
 const corsOptions = {

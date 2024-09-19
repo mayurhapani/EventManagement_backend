@@ -28,16 +28,34 @@ const getMyPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { disc, image } = req.body;
+  const { disc, image, eventDate, location, eventType, attendees } = req.body;
   const image_Id = extractPublicId(image);
+
   try {
-    if (!image || !disc) return res.status(422).json({ message: "Fill all the inputs" });
+    // Validate that all fields are present
+    if (!image || !disc || !eventDate || !location || !eventType || !attendees) {
+      return res.status(422).json({ message: "Fill all the inputs" });
+    }
 
     const user = req.user._id;
-    const response = await postModel.create({ disc, image, user, image_Id });
 
-    if (response) return res.status(201).json({ message: "Post Created Successfully" });
-    else return res.status(422).json({ message: response.message });
+    // Create the post with the additional event-related fields
+    const response = await postModel.create({
+      disc,
+      image,
+      user,
+      image_Id,
+      eventDate,
+      location,
+      eventType,
+      attendees,
+    });
+
+    if (response) {
+      return res.status(201).json({ message: "Post Created Successfully" });
+    } else {
+      return res.status(422).json({ message: response.message });
+    }
   } catch (error) {
     if (image_Id) await deleteImageByUrl(`posts/${image_Id}`, res);
     return res.status(500).json({ message: error.message });

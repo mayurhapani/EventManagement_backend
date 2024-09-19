@@ -18,6 +18,24 @@ const postSchema = new mongoose.Schema({
     ref: "USER",
     required: true,
   },
+  eventDate: {
+    type: Date, // Storing the event date
+    required: true,
+  },
+  location: {
+    type: String, // Storing the event location
+    required: true,
+  },
+  eventType: {
+    type: String, // Storing the event type
+    required: true,
+    enum: ["Conference", "Workshop", "Meetup", "Webinar"], // Add your own event types here
+  },
+  attendees: {
+    type: Number, // Storing the max number of attendees
+    required: true,
+    min: 1, // Ensure there's at least 1 attendee
+  },
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
