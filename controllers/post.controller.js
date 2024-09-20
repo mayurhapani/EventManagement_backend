@@ -74,6 +74,63 @@ const createPost = async (req, res) => {
   }
 };
 
+const editPost = async (req, res) => {
+  const {
+    postId,
+    title,
+    disc,
+    image,
+    eventStartDate,
+    eventEndDate,
+    location,
+    eventType,
+    attendees,
+  } = req.body;
+
+  const image_Id = extractPublicId(image);
+  const user = req.user._id;
+
+  try {
+    // Validate that all fields are present
+    if (
+      !postId ||
+      !title ||
+      !image ||
+      !disc ||
+      !eventStartDate ||
+      !eventEndDate ||
+      !location ||
+      !eventType ||
+      !attendees
+    ) {
+      return res.status(422).json({ message: "Fill all the inputs" });
+    }
+
+    // Create the post with the additional event-related fields
+    const response = await postModel.findByIdAndUpdate(postId, {
+      title,
+      disc,
+      image,
+      user,
+      image_Id,
+      eventStartDate,
+      eventEndDate,
+      location,
+      eventType,
+      attendees,
+    });
+
+    if (response) {
+      return res.status(201).json({ message: "Event Edited Successfully" });
+    } else {
+      return res.status(422).json({ message: response.message });
+    }
+  } catch (error) {
+    if (image_Id) await deleteImageByUrl(`posts/${image_Id}`, res);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -157,6 +214,7 @@ const myFollowing = async (req, res) => {
 
 module.exports = {
   createPost,
+  editPost,
   deletePost,
   getPosts,
   getMyPost,

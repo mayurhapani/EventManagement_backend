@@ -5,6 +5,7 @@ const {
   getPosts,
   getMyPost,
   createPost,
+  editPost,
   deletePost,
   likePost,
   addComment,
@@ -18,6 +19,7 @@ pRouter.get("/getMyPosts/:id", isAuth, getMyPost);
 pRouter.get("/myFollowing", isAuth, myFollowing);
 
 pRouter.post("/createPost", isAuth, createPost);
+pRouter.patch("/editPost", isAuth, editPost);
 pRouter.delete("/deletePost/:id", isAuth, deletePost);
 
 pRouter.get("/like/:id", isAuth, likePost);
