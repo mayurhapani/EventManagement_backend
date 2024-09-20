@@ -1,4 +1,5 @@
 const postModel = require("../models/post.model");
+const registerEventModel = require("../models/registerEvent.model");
 const { extractPublicId, deleteImageByUrl } = require("../public/javascripts/image_functions");
 
 const getPosts = async (req, res) => {
@@ -226,6 +227,37 @@ const myFollowing = async (req, res) => {
   }
 };
 
+const registerEvent = async (req, res) => {
+  try {
+    const { post, name, email, mobile, status, ticketCount } = req.body;
+    const user = req.user._id;
+
+    // Validate that all fields are present
+    if (!post || !name || !email || !mobile || !status || !ticketCount) {
+      return res.status(422).json({ message: "Fill all the inputs" });
+    }
+
+    // Create the post with the additional event-related fields
+    const response = await registerEventModel.create({
+      post,
+      user: user._id,
+      name,
+      email,
+      mobile,
+      status,
+      ticketCount,
+    });
+
+    if (response) {
+      return res.status(201).json({ message: "Registration In Event Successfully" });
+    } else {
+      return res.status(422).json({ message: response.message });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
@@ -236,4 +268,5 @@ module.exports = {
   addComment,
   deleteComment,
   myFollowing,
+  registerEvent,
 };

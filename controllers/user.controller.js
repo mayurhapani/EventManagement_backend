@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { extractPublicId, deleteImageByUrl } = require("../public/javascripts/image_functions");
 const postModel = require("../models/post.model");
+const registerEventModel = require("../models/registerEvent.model");
 const defaultImag =
   "https://res.cloudinary.com/mayurcloud21/image/upload/v1721210287/users/u0qrfanxqztl61j37odp.png";
 
@@ -61,7 +62,11 @@ const getUser = async (req, res) => {
   try {
     const user = req.user;
     const myPost = await postModel.find({ user: user._id }).populate("user");
-    return res.status(200).json({ user, myPost });
+    const bookedEvents = await registerEventModel
+      .find({ user: user._id })
+      .populate("user")
+      .populate("post");
+    return res.status(200).json({ user, myPost, bookedEvents });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
