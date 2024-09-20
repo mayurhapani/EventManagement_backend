@@ -9,6 +9,11 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+    min: 0, // Minimum price is 0
+  },
   image: {
     type: String,
     required: true,

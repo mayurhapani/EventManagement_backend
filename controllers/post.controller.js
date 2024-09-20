@@ -28,8 +28,17 @@ const getMyPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { title, disc, image, eventStartDate, eventEndDate, location, eventType, attendees } =
-    req.body;
+  const {
+    title,
+    disc,
+    image,
+    price,
+    eventStartDate,
+    eventEndDate,
+    location,
+    eventType,
+    attendees,
+  } = req.body;
   const image_Id = extractPublicId(image);
 
   try {
@@ -38,6 +47,7 @@ const createPost = async (req, res) => {
       !title ||
       !image ||
       !disc ||
+      !price ||
       !eventStartDate ||
       !eventEndDate ||
       !location ||
@@ -55,6 +65,7 @@ const createPost = async (req, res) => {
       disc,
       image,
       user,
+      price,
       image_Id,
       eventStartDate,
       eventEndDate,
@@ -80,6 +91,7 @@ const editPost = async (req, res) => {
     title,
     disc,
     image,
+    price,
     eventStartDate,
     eventEndDate,
     location,
@@ -97,6 +109,7 @@ const editPost = async (req, res) => {
       !title ||
       !image ||
       !disc ||
+      !price ||
       !eventStartDate ||
       !eventEndDate ||
       !location ||
@@ -112,6 +125,7 @@ const editPost = async (req, res) => {
       disc,
       image,
       user,
+      price,
       image_Id,
       eventStartDate,
       eventEndDate,
