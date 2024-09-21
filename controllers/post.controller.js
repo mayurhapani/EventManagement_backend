@@ -258,6 +258,31 @@ const registerEvent = async (req, res) => {
   }
 };
 
+const statusUpdate = async (req, res) => {
+  try {
+    const { eventId, status } = req.body;
+    const user = req.user._id;
+
+    // Validate that all fields are present
+    if (!eventId || !status) {
+      return res.status(422).json({ message: "Event or Status not found" });
+    }
+
+    // Create the post with the additional event-related fields
+    const response = await registerEventModel.findByIdAndUpdate(eventId, {
+      status,
+    });
+
+    if (response) {
+      return res.status(201).json({ message: "Status Updated" });
+    } else {
+      return res.status(422).json({ message: response.message });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
@@ -269,4 +294,5 @@ module.exports = {
   deleteComment,
   myFollowing,
   registerEvent,
+  statusUpdate,
 };

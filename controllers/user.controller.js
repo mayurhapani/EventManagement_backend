@@ -65,7 +65,7 @@ const getUser = async (req, res) => {
     const bookedEvents = await registerEventModel
       .find({ user: user._id })
       .populate("user")
-      .populate("post");
+      .populate({ path: "post", populate: { path: "user" } });
     return res.status(200).json({ user, myPost, bookedEvents });
   } catch (error) {
     return res.status(500).json({ message: error.message });
