@@ -13,6 +13,7 @@ const {
   myFollowing,
   registerEvent,
   statusUpdate,
+  addTicketCount,
 } = require("../controllers/post.controller");
 
 pRouter.get("/getPosts", isAuth, getPosts);
@@ -26,6 +27,7 @@ pRouter.delete("/deletePost/:id", isAuth, deletePost);
 
 pRouter.post("/registerEvent", isAuth, registerEvent);
 pRouter.patch("/statusUpdate", isAuth, statusUpdate);
+pRouter.patch("/addTicketCount", isAuth, addTicketCount);
 
 pRouter.get("/like/:id", isAuth, likePost);
 pRouter.post("/addComment/:id", isAuth, addComment);

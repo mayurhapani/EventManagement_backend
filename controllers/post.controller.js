@@ -283,6 +283,33 @@ const statusUpdate = async (req, res) => {
   }
 };
 
+const addTicketCount = async (req, res) => {
+  try {
+    const { post, ticketCount } = req.body;
+    const user = req.user._id;
+
+    // Validate that all fields are present
+    if (!post || !ticketCount) {
+      return res.status(422).json({ message: "Event or No of Tickets not found" });
+    }
+
+    // update the post with new number of registeredUser fields
+    const response = await postModel.findByIdAndUpdate(
+      post,
+      { $inc: { registeredUser: ticketCount } },
+      { new: true }
+    );
+
+    if (response) {
+      return res.status(201).json({ message: `Your  ${ticketCount} Tickets Booked` });
+    } else {
+      return res.status(422).json({ message: response.message });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
@@ -295,4 +322,5 @@ module.exports = {
   myFollowing,
   registerEvent,
   statusUpdate,
+  addTicketCount,
 };

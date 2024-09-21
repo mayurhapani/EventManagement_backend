@@ -29,19 +29,19 @@ const postSchema = new mongoose.Schema(
       required: true,
     },
     eventStartDate: {
-      type: Date, // Storing the event date
+      type: Date,
       required: true,
     },
     eventEndDate: {
-      type: Date, // Storing the event date
+      type: Date,
       required: true,
     },
     location: {
-      type: String, // Storing the event location
+      type: String,
       required: true,
     },
     eventType: {
-      type: String, // Storing the event type
+      type: String,
       required: true,
       enum: [
         "Conference",
@@ -55,9 +55,13 @@ const postSchema = new mongoose.Schema(
       ],
     },
     attendees: {
-      type: Number, // Storing the max number of attendees
+      type: Number,
       required: true,
-      min: 1, // Ensure there's at least 1 attendee
+      min: 1,
+    },
+    registeredUser: {
+      type: Number,
+      default: 0,
     },
     likes: [
       {
